@@ -1,12 +1,16 @@
 const {Router} = require('express');
-
+const { check } = require('express-validator');
+const { login } = require('../controllers/authController');
+const { validarCampos } = require('../middlewares/validar-campos');
 
 const authRoutes = Router();
 
 
-authRoutes.get('/', (req, res) => {
-    res.send('hola mundo');
-})
+authRoutes.post('/login',[
+    check('email', 'El email es obligatorio').isEmail(),
+    check('password', 'El password es obligatorio').not().isEmpty(),
+    validarCampos
+], login)
 
 
 module.exports = authRoutes
