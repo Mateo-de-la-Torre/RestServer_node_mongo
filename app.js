@@ -16,5 +16,6 @@ app.listen(port, () => {
 app.use(express.json());
 app.use(cors())
 app.use('/api', mainRouter);
+app.use(express.static('public'));
 
 

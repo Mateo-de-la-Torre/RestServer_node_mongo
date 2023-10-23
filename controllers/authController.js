@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const { response } = require('express');
 const jwt = require("jsonwebtoken");
+const { googleVerify } = require('../helpers/google-verify');
 
 const login = async (req, res) => {
 
@@ -58,6 +60,62 @@ const login = async (req, res) => {
     }
 };
 
+
+
+
+
+
+const googleSingIn = async (req, res = response) => {
+
+    const { id_token } = req.body;
+
+    try {
+
+        const { name, email, image } = await googleVerify(id_token);
+        
+        let usuario = await User.findOne({ email });
+
+        if (!usuario) {
+            // Si no existe, hay que crearlo
+            const data = {
+                name,
+                email,
+                password: 'abc123',
+                image, 
+                google: true,
+                rol: 'USER_ROLE' // Define el campo rol según tus necesidades
+            }
+            usuario = new User(data);
+            await usuario.save();
+        }
+
+        if (!usuario.estado) {
+            return res.status(400).send({ message: 'Hable con el administrador, usuario bloqueado' });
+        }
+
+        // Genera el token con la información correcta
+        const token = jwt.sign({ id: usuario._id, name: usuario.name, email: usuario.email }, process.env.SECRET_KEY, {
+            expiresIn: '10000h',
+        });
+
+        res.json({
+            usuario,
+            token
+        });
+        
+    } catch (error) {
+        console.error(error);
+        res.status(400).send({ message: 'El token no se pudo verificar' });
+    }
+}
+
+
+
+
+
+
+
 module.exports = {
-    login
+    login,
+    googleSingIn
 }
