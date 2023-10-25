@@ -1,3 +1,5 @@
+const Category = require('../models/category');
+const Product = require('../models/product');
 const Role = require('../models/role');
 const User = require('../models/user');
 
@@ -24,6 +26,20 @@ const existID = async (id) => {
     }
 }
 
+const existeCategoriaID = async (id) => {
+    const existeCategoria = await Category.findById( id );
+    if (!existeCategoria) {
+        throw new Error(`No existe una categoria con el id: ${ id } `);
+    }
+}
+
+
+const existeProductoID = async (id) => {
+    const existeProducto = await Product.findById( id );
+    if (!existeProducto) {
+        throw new Error(`No existe un producto con el id: ${ id } `);
+    }
+}
 
 
 
@@ -35,4 +51,6 @@ module.exports = {
     isRoleValidate,
     existEmail,
     existID,
+    existeCategoriaID,
+    existeProductoID
 }
