@@ -5,7 +5,7 @@ const authRoutes = require('./authRoutes');
 const categoriesRoutes = require('./categoriesRoutes');
 const productsRoutes = require('./productsRoutes')
 const buscarRoutes = require('./buscarRoutes');
-
+const uploadRoutes = require('./uploadRoutes')
 
 const mainRouter = Router();
 
@@ -17,7 +17,9 @@ mainRouter.use( '/categories', categoriesRoutes );
 
 mainRouter.use( '/products', productsRoutes );
 
-mainRouter.use( '/buscar' , buscarRoutes) 
+mainRouter.use( '/buscar' , buscarRoutes);
+
+mainRouter.use( '/upload' , uploadRoutes);
 
 
 module.exports = mainRouter

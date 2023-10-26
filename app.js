@@ -1,6 +1,8 @@
 require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
+const fileUpload = require('express-fileupload')
+
 const db = require('./database/db');
 
 const mainRouter = require('./routes/index')
@@ -13,9 +15,23 @@ app.listen(port, () => {
   db();
 })
 
-app.use(express.json());
-app.use(cors())
-app.use('/api', mainRouter);
-app.use(express.static('public'));
+
+// Midlewares
+
+app.use(express.json()); // Lectura y parseo del body
+
+app.use(cors()) // Cors
+
+app.use(fileUpload({ // Carga de archivos (PONER ANTES QUE LA RUTA PRINCiPAL)
+  useTempFiles : true,
+  tempFileDir : '/tmp/',
+  createParentPath: true // si no existe la carpeta, la crea automaticamente
+}));
+
+app.use('/api', mainRouter);  // Ruta principal
+
+app.use(express.static('public')); // Directorio Public
+
+
 
 

@@ -32,7 +32,10 @@ const ProductSchema = Schema({
     disponible: {
         type: Boolean,
         default: true
-    }
+    },
+    image: {
+        type: String,
+    },
 
 })
 
