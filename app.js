@@ -7,7 +7,7 @@ const db = require('./database/db');
 
 const mainRouter = require('./routes/index')
 
-const port = process.env.PORT 
+const port = process.env.PORT || 3001;
 const app = express();
 
 app.listen(port, () => {
